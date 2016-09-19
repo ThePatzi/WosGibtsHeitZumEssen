@@ -16,4 +16,6 @@ libraryDependencies ++= Seq(
 )
 
 libraryDependencies += "net.ruippeixotog" %% "scala-scraper" % "1.0.0"
-libraryDependencies += "com.fasterxml.jackson.module" % "jackson-module-scala" % "2.0.2"
+libraryDependencies += "com.fasterxml.jackson.module" % "jackson-module-scala_2.11" % "2.8.2"
+libraryDependencies += "org.slf4j" % "slf4j-api" % "1.7.21"
+libraryDependencies += "org.slf4j" % "slf4j-simple" % "1.7.21"

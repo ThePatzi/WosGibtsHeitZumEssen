@@ -12,7 +12,6 @@ import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model.Element
 
 import scala.language.postfixOps
-import scala.util.parsing.json.JSON
 
 /**
   * Created by Patrick on 18.09.2016.
@@ -40,6 +39,7 @@ object Updater {
   }
 
   def scheduleUpdate(): Unit = {
-
+    doUpdate()
+    println("update")
   }
 }

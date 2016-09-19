@@ -11,6 +11,7 @@ import scala.collection.mutable
   */
 object DayMenuDataStore {
   private val menuMap = new mutable.HashMap[LocalDate, DayMenu]()
+    .withDefaultValue(null)
 
   def apply(date: LocalDate): DayMenu = menuMap(date)
 
