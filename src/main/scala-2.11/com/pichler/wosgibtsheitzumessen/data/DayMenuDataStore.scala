@@ -21,4 +21,11 @@ object DayMenuDataStore {
 
   def all: List[DayMenu] = menuMap.values toList
 
+  def between(fromDate: LocalDate, toDate: LocalDate): List[DayMenu] = {
+    all.toStream.filter(m => !m.date.isBefore(fromDate) &&
+      (m.date.isBefore(toDate) || m.date.isEqual(toDate)))
+      .toList
+      .sortWith((d, d1) => d.date.compareTo(d1.date) < 0)
+  }
+
 }

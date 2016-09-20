@@ -1,6 +1,7 @@
 package com.pichler.wosgibtsheitzumessen.services
 
-import java.time.LocalDate
+import java.time.temporal.ChronoField
+import java.time.{DayOfWeek, LocalDate}
 
 import com.fasterxml.jackson.databind.{ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
@@ -10,6 +11,9 @@ import com.pichler.wosgibtsheitzumessen.util.Util.{DateToStr, StrToDate}
 import org.http4s._
 import org.http4s.dsl._
 import org.http4s.server.blaze._
+
+import scala.collection.immutable.SortedMap
+import scala.util.Try
 
 /**
   * Created by Patrick on 18.09.2016.
@@ -28,36 +32,104 @@ object Services {
     case GET -> Root / "hello" / name => Ok(s"Hello, $name")
   }
 
-  object PrettyPrintQueryParamMatcher extends QueryParamDecoderMatcher[String]("pretty")
+  object LocalDateVar {
+    def unapply(str: String): Option[LocalDate] = {
+      if (!str.isEmpty) {
+        Try(str.toLocalDate("dd.MM.yyyy")).toOption
+      } else {
+        None
+      }
+    }
+  }
+
+  object IntVar {
+    def unapply(str: String): Option[Int] = {
+      if (!str.isEmpty) {
+        Try(str.toInt).toOption
+      } else {
+        None
+      }
+    }
+  }
+
+  def objectToJSON(o: Any, queryParams: Map[String, _]): String = {
+    getObjectMapper(if (queryParams != null) queryParams.contains("pretty") else false)
+      .writeValueAsString(o)
+  }
 
   val menuAPI = HttpService {
-    case GET -> Root / "menu" / fromDate / toDate :? queryParams => {
-      val parsedFromDate: LocalDate = fromDate.toLocalDate("dd.MM.yyyy")
-      val parsedToDate: LocalDate = toDate.toLocalDate("dd.MM.yyyy")
+    case GET -> Root / "menu" / LocalDateVar(fromDate) / LocalDateVar(toDate) :? queryParams => {
 
-      val dayMenus = DayMenuDataStore.all.toStream.filter(m => !m.date.isBefore(parsedFromDate) && m.date.isBefore(parsedToDate))
-        .map(m => m.date.toString("dd.MM.yyyy") -> m)
-        .toMap
+      val dayMenusList = DayMenuDataStore.between(fromDate, toDate)
+
+      val dayMenus = SortedMap(dayMenusList.map(e => e.date.toString("dd.MM.yyyy") -> e): _*)
 
       if (dayMenus != null) {
-        Ok(getObjectMapper(queryParams.contains("pretty"))
-          .writeValueAsString(dayMenus))
+        Ok(objectToJSON(dayMenus, queryParams))
       } else {
         Ok("{}")
       }
     }
 
-    case GET -> Root / "menu" / date :? queryParams => {
-      val parsedDate: LocalDate = date.toLocalDate("dd.MM.yyyy")
-      val dayMenu: DayMenu = DayMenuDataStore(parsedDate)
+    case GET -> Root / "menu" / "today" :? queryParams => {
+      val dayMenu = DayMenuDataStore(LocalDate.now())
 
       if (dayMenu != null) {
-        Ok(getObjectMapper(queryParams.contains("pretty"))
-          .writeValueAsString(dayMenu))
+        Ok(objectToJSON(dayMenu, queryParams))
       } else {
         Ok("{}")
       }
     }
+
+    case GET -> Root / "menu" / "week" :? queryParams => {
+      val today: LocalDate = LocalDate.now()
+      val dayMenusList = DayMenuDataStore.between(today.`with`(DayOfWeek.MONDAY), today.`with`(DayOfWeek.SUNDAY))
+
+      val dayMenus = SortedMap(dayMenusList.map(e => e.date.toString("dd.MM.yyyy") -> e): _*)
+
+      if (dayMenus != null) {
+        Ok(objectToJSON(dayMenus, queryParams))
+      } else {
+        Ok("{}")
+      }
+    }
+
+    case GET -> Root / "menu" / "week" / IntVar(nr) :? queryParams => {
+      val weekOfYear: LocalDate = LocalDate.now().`with`(ChronoField.ALIGNED_WEEK_OF_YEAR, nr)
+      val dayMenusList = DayMenuDataStore.between(weekOfYear.`with`(DayOfWeek.MONDAY), weekOfYear.`with`(DayOfWeek.SUNDAY))
+
+      val dayMenus = SortedMap(dayMenusList.map(e => e.date.toString("dd.MM.yyyy") -> e): _*)
+
+      if (dayMenus != null) {
+        Ok(objectToJSON(dayMenus, queryParams))
+      } else {
+        Ok("{}")
+      }
+    }
+
+    case GET -> Root / "menu" / "week" / IntVar(nr) / IntVar(year) :? queryParams => {
+      val weekOfYear: LocalDate = LocalDate.now().`with`(ChronoField.YEAR, year).`with`(ChronoField.ALIGNED_WEEK_OF_YEAR, nr)
+      val dayMenusList = DayMenuDataStore.between(weekOfYear.`with`(DayOfWeek.MONDAY), weekOfYear.`with`(DayOfWeek.SUNDAY))
+
+      val dayMenus = SortedMap(dayMenusList.map(e => e.date.toString("dd.MM.yyyy") -> e): _*)
+
+      if (dayMenus != null) {
+        Ok(objectToJSON(dayMenus, queryParams))
+      } else {
+        Ok("{}")
+      }
+    }
+
+    case GET -> Root / "menu" / LocalDateVar(date) :? queryParams => {
+      val dayMenu: DayMenu = DayMenuDataStore(date)
+
+      if (dayMenu != null) {
+        Ok(objectToJSON(dayMenu, queryParams))
+      } else {
+        Ok("{}")
+      }
+    }
+
   }
 
   val builder = BlazeBuilder.bindHttp(8080, "localhost")
