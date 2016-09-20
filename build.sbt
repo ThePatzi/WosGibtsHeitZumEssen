@@ -7,7 +7,7 @@ scalaVersion := "2.11.8"
 val http4sVersion = "0.15.0a-SNAPSHOT"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
-resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
+//resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
 libraryDependencies ++= Seq(
   "org.http4s" %% "http4s-dsl" % http4sVersion,
