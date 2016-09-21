@@ -22,3 +22,4 @@ project/plugins/project/
 # http://www.scala-sbt.org/release/docs/Getting-Started/Directories.html#configuring-version-control
 
 /.idea/libraries/
+/firebase-auth.json

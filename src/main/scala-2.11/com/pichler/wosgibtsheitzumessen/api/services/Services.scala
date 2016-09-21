@@ -1,4 +1,4 @@
-package com.pichler.wosgibtsheitzumessen.services
+package com.pichler.wosgibtsheitzumessen.api.services
 
 import java.time.temporal.ChronoField
 import java.time.{DayOfWeek, LocalDate}

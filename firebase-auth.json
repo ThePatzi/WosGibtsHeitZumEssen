@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "wosgibtsheitzumessen",
+  "private_key_id": "1b50ab15403678ffe46d4c16d88d469c4830c37c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDRnZ8SnjM1VvuA\nKfp6oNPbWVaEHl1xbD1FCnEkMD9r9ZxnIQ8myllQFk8fa3rpe2QTwLbPb3WAeXmj\nH4NEFLBbaPyviABqSma0ikadyzZE+b5K5el2aSBO5hy4Rx9BC4lBZmWgRkQQhVGh\nhX4eObaM4VYP/HxfNoKTMMzPXTaJpF64RrvdbiDzVXex5lhsoIn0gdFemSUxlArT\nBhJUPTEr1gQdscwIzuTEa+RjGE0Ol84TjOxhb4X+4JoUnmJXYN/npIVqmiwR4tVv\nMgi6w8hIMRB2IC5UntEwFnIKon0DPhDpp/F6WBsfElo+eaFhNr7hBNI9ym04JC/N\n34CyCE2bAgMBAAECggEATjvR/xTkb+gC/has0c/swlVZoP3kSkznoTkAeU04noaQ\n1TzVdtjW9Lke1s86lKHk/CpVEJ688DJmX6eHSoWePL+2b50G6qTSKFfje0k4/A1q\nJHIi7HrYABqKZYzF8XToyWv6ShNvm+rmSK6WH5nStEn14QmPMcoaee0gw9Q6Yqw1\nOidtrHu8y21dUqaiErhZX8jxImYQTCMM70ojQQ6H3n5KPoQGYgV2MNZCy/TEVQHk\nfFRg7irHlh9ylcdpFPIThmABHg91DWeYutTYYinc8NaZ39jpEaq7XBHAO5xAdpPm\nyiTWx8Qobknc9myPvG2KIyDLPib97uuuZYnj/IpkIQKBgQDztQF1m5r12ax5RcGb\n0XvyqrHJGT3a1qZZpMrlbnVAkxjt+KlNwZsA4RMq5joascE2Ao6Fl1sJx6djmyih\n6Z1x+k4ecj420wu2genNP50ujsah84LC8BazfaX0iERSmWB0Myf5d96rWo0c5EEU\naa07440fH5A5NpBZxAYmMszEdQKBgQDcMGS3YBP1+7RfgWk4F2mfyQ5GXM8ZxQT1\nGg/x4Jzvf1iler9Y1H8Iyc39fnafG4G4MePYrOdWUbEayhHVZiclKYsSoke/MI7M\ngzk2F0fvDqf8UhthJp3VM16nJmMQIpEnWI9y6rThvQtsJ1cBVtlHM3EaKDWjmKYT\nOzQ5kPVHzwKBgF1y6M5aDn97KkGOWAERwL96aJW+EhPZ/wucvxhe1KMgRIzrrq/c\nLz2VEK6AfYNC6d11+YSMVyJW5n6xPlFnrTHJUy8li2mmX3VqN2a2n+T8ZnovT9LE\nEVBeO8aagehSW8Py4b8tEbsPC9EqTTIwm3a9eJ2Yksr9eziQi/MVw6MJAoGBAKKe\nkyPjr5pShYqrtxwYHohGI2bQEJyFp/2le/U14HH5aWz91Og0OIYzFRGNHuqvlASH\nxDE4sbpMpzKT3svuoCaQIghnFfocULq2h8BtPVFPT73InjQIIzVctSFZ9nvqK64V\neAx1T5YQ2qjL/TQeAmbVlUiuPb9PdAhsB0wkxSJ9AoGBAK6ttWQN/1+92Ad6qlEh\nGCJL5PfsTsINB1TwrTfE99UfspTsSwrghpHVnbsOPBkOg8eJ++LWBJI6z6eGN977\nb7EadubG3281y3PLisMuKzk/DrNuNO8zKn/3KlZm39ImFFHCQMTX362nh6GPQyOR\n55RAEunEnDb+Ln0Ehox8UbkO\n-----END PRIVATE KEY-----\n",
+  "client_email": "scalaworker@wosgibtsheitzumessen.iam.gserviceaccount.com",
+  "client_id": "105382399881569170869",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/scalaworker%40wosgibtsheitzumessen.iam.gserviceaccount.com"
+}

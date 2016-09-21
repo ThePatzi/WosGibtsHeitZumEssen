@@ -3,6 +3,7 @@ package com.pichler.wosgibtsheitzumessen.update
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 import java.util.Locale
+import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 
 import com.pichler.wosgibtsheitzumessen.data.DayMenuDataStore
 import com.pichler.wosgibtsheitzumessen.model.DayMenu
@@ -12,11 +13,14 @@ import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model.Element
 
 import scala.language.postfixOps
+import com.pichler.wosgibtsheitzumessen.util.Util.{StrToDate, funcToRunnable}
 
 /**
   * Created by Patrick on 18.09.2016.
   */
 object Updater {
+  var executorService: ScheduledExecutorService = Executors.newScheduledThreadPool(2)
+
   private def parseMenuItem(date: LocalDate, element: Element): DayMenu = element.innerHtml.replaceAll("<[^<>]*>", "")
     .replaceAll("<br>*", "\n")
     .split("\n")
@@ -30,16 +34,17 @@ object Updater {
     val browser = JsoupBrowser()
     val doc = browser.get("http://www.netzwerk111.at/restaurant-hartberg/mittagsmenu/")
 
-    val dtf = DateTimeFormatter.ofPattern("EEEE, dd.MM.yyyy").withLocale(Locale.GERMANY)
-
     (doc >> elementList(".menu1")).toStream.flatMap(_ >> elementList(".inner-box"))
       .filter({ e => (e >> text(".menu-title2")).matches("[A-Za-z].*, [0-9.]*") })
-      .map(e => parseMenuItem(LocalDate.parse(e >> text(".menu-title2"), dtf), e))
+      .map(e => parseMenuItem((e >> text(".menu-title2")).toLocalDate("eeee, dd.MM.yyyy"), e))
       .foreach(DayMenuDataStore += _)
   }
 
   def scheduleUpdate(): Unit = {
     doUpdate()
+
+    executorService.schedule(() => doUpdate(), 1, TimeUnit.DAYS)
+
     println("update")
   }
 }
