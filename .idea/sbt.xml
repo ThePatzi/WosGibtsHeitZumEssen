@@ -5,17 +5,22 @@
       <SbtProjectSettings>
         <option name="createEmptyContentRootDirectories" value="true" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
+        <option name="jdk" value="1.8" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/project" />
+            <option value="$PROJECT_DIR$/refresher" />
+            <option value="$PROJECT_DIR$/refresher/project" />
+            <option value="$PROJECT_DIR$/server" />
+            <option value="$PROJECT_DIR$/server/project" />
+            <option value="$PROJECT_DIR$/shared" />
+            <option value="$PROJECT_DIR$/shared/project" />
           </set>
         </option>
         <option name="resolveJavadocs" value="true" />
         <option name="resolveSbtClassifiers" value="true" />
         <option name="sbtVersion" value="0.13.8" />
-        <option name="useAutoImport" value="true" />
-        <option name="useOurOwnAutoImport" value="true" />
       </SbtProjectSettings>
     </option>
   </component>

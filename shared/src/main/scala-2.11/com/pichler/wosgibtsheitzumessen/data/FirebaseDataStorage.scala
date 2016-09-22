@@ -12,7 +12,7 @@ import com.google.firebase.{FirebaseApp, FirebaseOptions}
 object FirebaseDataStorage {
   val firebaseApp = {
     val firebaseOptions = new FirebaseOptions.Builder()
-      .setServiceAccount(new FileInputStream(Paths.get("firebase-auth.json").toFile))
+      .setServiceAccount(new FileInputStream(Paths.get("..", "credentials", "firebase-auth.json").toFile))
       .setDatabaseUrl("https://wosgibtsheitzumessen.firebaseio.com/")
       .build()
 

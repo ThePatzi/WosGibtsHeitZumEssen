@@ -1,19 +1,17 @@
-package com.pichler.wosgibtsheitzumessen.update
+package com.pichler.wosgibtsheitzumessen.refresher
 
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 
 import com.pichler.wosgibtsheitzumessen.data.DayMenuDataStore
 import com.pichler.wosgibtsheitzumessen.model.DayMenu
+import com.pichler.wosgibtsheitzumessen.util.Util.{StrToDate, funcToRunnable}
 import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
 import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model.Element
 
 import scala.language.postfixOps
-import com.pichler.wosgibtsheitzumessen.util.Util.{StrToDate, funcToRunnable}
 
 /**
   * Created by Patrick on 18.09.2016.

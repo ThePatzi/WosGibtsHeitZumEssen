@@ -1,4 +1,4 @@
-package com.pichler.wosgibtsheitzumessen.update
+package com.pichler.wosgibtsheitzumessen.refresher
 
 /**
   * Created by Patrick on 21.09.2016.
