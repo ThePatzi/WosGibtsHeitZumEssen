@@ -132,7 +132,7 @@ object Services {
 
   }
 
-  val builder = BlazeBuilder.bindHttp(8080, "localhost")
+  val builder = BlazeBuilder.bindHttp(8080, "0.0.0.0")
     .mountService(helloWorldService, "/")
     .mountService(menuAPI, "/api")
 
