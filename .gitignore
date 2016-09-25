@@ -25,3 +25,4 @@ project/plugins/project/
 /firebase-auth.json
 /.idea/
 /credentials/firebase-auth.json
+/credentials/bot.token

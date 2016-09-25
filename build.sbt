@@ -90,8 +90,41 @@ lazy val server = project.in(file("server"))
     )
   )
 
+lazy val telegramBot = project.in(file("telegramBot"))
+  .settings(
+    scalaVersion := scalaV,
+    name := "server",
+    resolvers += "jitpack" at "https://jitpack.io",
+    libraryDependencies += "com.github.mukel" %% "telegrambot4s" % "v1.2.1",
+
+    mainClass in assembly := Some("com.pichler.wosgibtsheitzumessen.telegrambot.Main"),
+    assemblyJarName in assembly := "WosGibtsHeitZumEssen_telegrambot.jar",
+    assemblyMergeStrategy in assembly := {
+      case PathList(xs@_*) if xs.contains("opuswrapper") || xs.contains("tritonus") => MergeStrategy.last // needed to have both JDA and D4J at the same time
+      case x =>
+        val oldStrategy = (assemblyMergeStrategy in assembly).value
+        oldStrategy(x)
+    }
+  )
+  .dependsOn(shared)
+  .enablePlugins(DockerPlugin)
+  .settings(
+    dockerfile in docker := {
+      val artifact: File = assembly.value
+      val artifactTargetPath = s"/app/${artifact.name}"
+      new Dockerfile {
+        from("java:8")
+        add(artifact, artifactTargetPath)
+        entryPoint("java", "-jar", artifactTargetPath)
+      }
+    },
+    imageNames in docker := Seq(
+      ImageName("patzi/wosgibtsheitzumessen_telegrambot:latest")
+    )
+  )
+
 lazy val root = project.in(file("."))
-  .aggregate(shared, refresher, server)
+  .aggregate(shared, refresher, server, telegramBot)
   .settings(
     scalaVersion := scalaV,
     name := "root"

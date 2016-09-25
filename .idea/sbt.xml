@@ -16,6 +16,8 @@
             <option value="$PROJECT_DIR$/server/project" />
             <option value="$PROJECT_DIR$/shared" />
             <option value="$PROJECT_DIR$/shared/project" />
+            <option value="$PROJECT_DIR$/telegramBot" />
+            <option value="$PROJECT_DIR$/telegramBot/project" />
           </set>
         </option>
         <option name="resolveJavadocs" value="true" />

@@ -5,9 +5,30 @@ import java.time.format.DateTimeFormatter
 import java.util.Locale
 
 import scala.collection.mutable
+import scala.util.Try
 
 object Util {
   val dateFormatterMap = new mutable.HashMap[String, DateTimeFormatter]()
+
+  object LocalDateVar {
+    def unapply(str: String): Option[LocalDate] = {
+      if (!str.isEmpty) {
+        Try(str.toLocalDate("dd.MM.yyyy")).toOption
+      } else {
+        None
+      }
+    }
+  }
+
+  object IntegerVar {
+    def unapply(str: String): Option[Int] = {
+      if (!str.isEmpty) {
+        Try(str.toInt).toOption
+      } else {
+        None
+      }
+    }
+  }
 
   implicit class StrToDate(str: String) {
     def toLocalDate(pattern: String, locale: Locale = Locale.GERMANY): LocalDate = {

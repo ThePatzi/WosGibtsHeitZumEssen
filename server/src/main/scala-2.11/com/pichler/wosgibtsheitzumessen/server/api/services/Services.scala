@@ -7,13 +7,13 @@ import com.fasterxml.jackson.databind.{ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import com.pichler.wosgibtsheitzumessen.data.DayMenuDataStore
 import com.pichler.wosgibtsheitzumessen.model.DayMenu
-import com.pichler.wosgibtsheitzumessen.util.Util.{DateToStr, StrToDate}
+import com.pichler.wosgibtsheitzumessen.util.Util
+import com.pichler.wosgibtsheitzumessen.util.Util._
 import org.http4s._
 import org.http4s.dsl._
 import org.http4s.server.blaze._
 
 import scala.collection.immutable.SortedMap
-import scala.util.Try
 
 /**
   * Created by Patrick on 18.09.2016.
@@ -30,26 +30,6 @@ object Services {
 
   val helloWorldService = HttpService {
     case GET -> Root / "hello" / name => Ok(s"Hello, $name")
-  }
-
-  object LocalDateVar {
-    def unapply(str: String): Option[LocalDate] = {
-      if (!str.isEmpty) {
-        Try(str.toLocalDate("dd.MM.yyyy")).toOption
-      } else {
-        None
-      }
-    }
-  }
-
-  object IntVar {
-    def unapply(str: String): Option[Int] = {
-      if (!str.isEmpty) {
-        Try(str.toInt).toOption
-      } else {
-        None
-      }
-    }
   }
 
   def objectToJSON(o: Any, queryParams: Map[String, _]): String = {
@@ -94,7 +74,7 @@ object Services {
       }
     }
 
-    case GET -> Root / "menu" / "week" / IntVar(nr) :? queryParams => {
+    case GET -> Root / "menu" / "week" / IntegerVar(nr) :? queryParams => {
       val weekOfYear: LocalDate = LocalDate.now().`with`(ChronoField.ALIGNED_WEEK_OF_YEAR, nr)
       val dayMenusList = DayMenuDataStore.between(weekOfYear.`with`(DayOfWeek.MONDAY), weekOfYear.`with`(DayOfWeek.SUNDAY))
 
@@ -107,7 +87,7 @@ object Services {
       }
     }
 
-    case GET -> Root / "menu" / "week" / IntVar(nr) / IntVar(year) :? queryParams => {
+    case GET -> Root / "menu" / "week" / IntegerVar(nr) / IntegerVar(year) :? queryParams => {
       val weekOfYear: LocalDate = LocalDate.now().`with`(ChronoField.YEAR, year).`with`(ChronoField.ALIGNED_WEEK_OF_YEAR, nr)
       val dayMenusList = DayMenuDataStore.between(weekOfYear.`with`(DayOfWeek.MONDAY), weekOfYear.`with`(DayOfWeek.SUNDAY))
 

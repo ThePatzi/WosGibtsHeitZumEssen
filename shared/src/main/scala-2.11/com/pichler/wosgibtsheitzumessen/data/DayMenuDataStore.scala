@@ -67,5 +67,4 @@ object DayMenuDataStore {
       .toList
       .sortWith((d, d1) => d.date.compareTo(d1.date) < 0)
   }
-
 }

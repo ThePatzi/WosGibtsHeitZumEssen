@@ -10,6 +10,8 @@
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/server-build.iml" filepath="$PROJECT_DIR$/.idea/modules/server-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared.iml" filepath="$PROJECT_DIR$/.idea/modules/shared.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/shared-build.iml" filepath="$PROJECT_DIR$/.idea/modules/shared-build.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/telegramBot.iml" filepath="$PROJECT_DIR$/.idea/modules/telegramBot.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/telegramBot-build.iml" filepath="$PROJECT_DIR$/.idea/modules/telegramBot-build.iml" />
     </modules>
   </component>
 </project>
