@@ -7,13 +7,14 @@ import com.pichler.wosgibtsheitzumessen.model.DayMenu
 
 import scala.collection.mutable
 import scala.collection.JavaConversions._
-import com.pichler.wosgibtsheitzumessen.util.FirebaseUtil.toValueEventListenerUpdate
+import com.pichler.wosgibtsheitzumessen.util.firebase.FirebaseUtil.toValueEventListenerUpdate
 import com.pichler.wosgibtsheitzumessen.util.Util.DateToStr
 
 /**
   * Created by Patrick on 17.09.2016.
   */
 object DayMenuDataStore {
+  println("data")
   private val menuReference = FirebaseDataStorage.firebaseDatabase.getReference("menu")
 
   private val menuMap = new mutable.HashMap[LocalDate, DayMenu]()
@@ -67,4 +68,6 @@ object DayMenuDataStore {
       .toList
       .sortWith((d, d1) => d.date.compareTo(d1.date) < 0)
   }
+
+  def start(): Unit = {}
 }

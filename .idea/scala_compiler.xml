@@ -4,6 +4,8 @@
     <profile name="SBT 1" modules="wosgibtsheitzumessen">
       <option name="postfixOps" value="true" />
     </profile>
-    <profile name="SBT 3" modules="root,refresher,server,shared,telegramBot" />
+    <profile name="SBT 3" modules="root,refresher,server,shared,telegramBot">
+      <option name="implicitConversions" value="true" />
+    </profile>
   </component>
 </project>

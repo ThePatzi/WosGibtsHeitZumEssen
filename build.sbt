@@ -11,7 +11,6 @@ val http4sVersion = "0.15.0a-SNAPSHOT"
 resolvers += Resolver.sonatypeRepo("snapshots")
 //resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
 
-
 lazy val shared = project.in(file("shared"))
   .settings(
     scalaVersion := scalaV,

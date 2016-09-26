@@ -1,4 +1,4 @@
-package com.pichler.wosgibtsheitzumessen.util
+package com.pichler.wosgibtsheitzumessen.util.firebase
 
 import com.google.firebase.database.{DataSnapshot, DatabaseError, ValueEventListener}
 

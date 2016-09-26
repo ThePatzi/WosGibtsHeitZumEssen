@@ -50,4 +50,10 @@ object Util {
     override def run(): Unit = func()
   }
 
+  implicit class EscapedString(string: String) {
+    def escapeHTML(): String = {
+      string.replaceAll("<", "$lt;").replaceAll(">", "$gt;").replaceAll("&", "&amp;")
+    }
+  }
+
 }
