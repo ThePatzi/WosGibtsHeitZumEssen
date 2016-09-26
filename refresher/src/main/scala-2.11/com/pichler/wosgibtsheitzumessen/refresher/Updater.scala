@@ -1,6 +1,6 @@
 package com.pichler.wosgibtsheitzumessen.refresher
 
-import java.time.LocalDate
+import java.time.{LocalDate, LocalTime}
 import java.util.concurrent.{Executors, ScheduledExecutorService, TimeUnit}
 
 import com.pichler.wosgibtsheitzumessen.data.DayMenuDataStore
@@ -10,6 +10,8 @@ import net.ruippeixotog.scalascraper.browser.JsoupBrowser
 import net.ruippeixotog.scalascraper.dsl.DSL.Extract._
 import net.ruippeixotog.scalascraper.dsl.DSL._
 import net.ruippeixotog.scalascraper.model.Element
+import com.pichler.wosgibtsheitzumessen.util.Util._
+import com.pichler.wosgibtsheitzumessen.util.TimeBasedExecution.TimeBasedExecution
 
 import scala.language.postfixOps
 
@@ -41,7 +43,7 @@ object Updater {
   def scheduleUpdate(): Unit = {
     doUpdate()
 
-    executorService.schedule(() => doUpdate(), 1, TimeUnit.DAYS)
+    executorService.scheduleAt(LocalTime.of(8, 0), () => doUpdate())
 
     println("update")
   }

@@ -1,5 +1,6 @@
 package com.pichler.wosgibtsheitzumessen.server.api
 
+import com.pichler.wosgibtsheitzumessen.data.DayMenuDataStore
 import com.pichler.wosgibtsheitzumessen.server.api.services.Services
 import org.http4s.server.{Server, ServerApp}
 
@@ -10,6 +11,7 @@ import scalaz.concurrent.Task
   */
 object Main extends ServerApp {
   override def server(args: List[String]): Task[Server] = {
+    DayMenuDataStore.start()
     Services.builder.start
   }
 }
