@@ -27,10 +27,13 @@ lazy val refresher = project.in(file("refresher"))
   .settings(
     scalaVersion := scalaV,
     name := "refresher",
-    resolvers += Resolver.jcenterRepo,
-    resolvers += Resolver.sonatypeRepo("snapshots"),
+    resolvers ++= Seq(
+      Resolver.jcenterRepo,
+      Resolver.sonatypeRepo("snapshots")
+    ),
     libraryDependencies ++= Seq(
-      "net.ruippeixotog" %% "scala-scraper" % "1.0.0" withSources() withJavadoc()
+      "net.ruippeixotog" %% "scala-scraper" % "1.0.0" withSources() withJavadoc(),
+      "com.sun.mail" % "javax.mail" % "1.5.6"
     ),
     mainClass in assembly := Some("com.pichler.wosgibtsheitzumessen.refresher.Main"),
     assemblyJarName in assembly := "WosGibtsHeitZumEssen_refresher.jar"

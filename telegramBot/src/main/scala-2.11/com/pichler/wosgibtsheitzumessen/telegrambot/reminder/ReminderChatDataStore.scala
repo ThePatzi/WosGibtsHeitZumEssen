@@ -1,6 +1,6 @@
 package com.pichler.wosgibtsheitzumessen.telegrambot.reminder
 
-import java.time.{LocalDate, LocalTime}
+import java.time._
 import java.util.concurrent.Executors
 
 import com.google.firebase.database.DataSnapshot
@@ -11,8 +11,8 @@ import com.pichler.wosgibtsheitzumessen.util.TimeBasedExecution._
 import com.pichler.wosgibtsheitzumessen.util.firebase.ChildEventAdapter
 import com.pichler.wosgibtsheitzumessen.util.firebase.FirebaseUtil.toValueEventListenerUpdate
 import info.mukel.telegrambot4s.methods.{ParseMode, SendMessage}
-import scala.collection.JavaConversions._
 
+import scala.collection.JavaConversions._
 import scala.collection.mutable
 
 /**

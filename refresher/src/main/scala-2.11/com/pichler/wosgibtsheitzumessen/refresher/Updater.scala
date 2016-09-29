@@ -37,7 +37,7 @@ object Updater {
     (doc >> elementList(".menu1")).toStream.flatMap(_ >> elementList(".inner-box"))
       .filter({ e => (e >> text(".menu-title2")).matches("[A-Za-z].*, [0-9.]*") })
       .map(e => parseMenuItem((e >> text(".menu-title2")).toLocalDate("eeee, dd.MM.yyyy"), e))
-      .foreach(DayMenuDataStore += _)
+      .foreach(DayMenuDataStore <> _)
   }
 
   def scheduleUpdate(): Unit = {

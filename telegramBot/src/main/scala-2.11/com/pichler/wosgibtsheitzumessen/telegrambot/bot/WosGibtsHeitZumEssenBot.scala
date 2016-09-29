@@ -27,7 +27,7 @@ object WosGibtsHeitZumEssenBot extends TelegramBot with Polling with Commands {
     else
       s"""
          |*${dayMenu.date.toString("dd.MM.yyyy")}*
-         |_Suppe:_ ${dayMenu.soup}
+         |_Suppe:_ ${dayMenu.actualSoup}
          |_Menu 1:_ ${dayMenu.menu1}
          |_Menu 2:_ ${dayMenu.menu2}
     """.stripMargin
@@ -36,13 +36,15 @@ object WosGibtsHeitZumEssenBot extends TelegramBot with Polling with Commands {
   def formatHTML(dayMenu: DayMenu): String = {
     if (dayMenu == null)
       s"<b>-</b>"
-    else
-      s"""
-         |<b>${dayMenu.date.toString("dd.MM.yyyy")}</b>
-         |<i>Suppe:</i> ${dayMenu.soup.escapeHTML()}
-         |<i>Menu 1:</i> ${dayMenu.menu1.escapeHTML()}
-         |<i>Menu 2:</i> ${dayMenu.menu2.escapeHTML()}
-      """.stripMargin
+    else {
+      Seq(
+        s"<b>${dayMenu.date.toString("dd.MM.yyyy")}</b>",
+        s"<i>Suppe:</i> ${dayMenu.actualSoup.escapeHTML()}",
+        s"<i>Menu 1:</i> ${dayMenu.menu1.escapeHTML()}",
+        s"<i>Menu 2:</i> ${dayMenu.menu2.escapeHTML()}",
+        if (dayMenu.hasMenu3) s"<i>Tagesempfehlung:</i> ${dayMenu.specialMenu.menu}" else "__ignore__"
+      ) filterNot (_.contains("__ignore__")) mkString "\n"
+    } + "\n"
   }
 
   def replyMarkdown(msg: String)(implicit message: Message): Unit = {
@@ -176,6 +178,6 @@ object WosGibtsHeitZumEssenBot extends TelegramBot with Polling with Commands {
 
   def start(): Unit = {
     run()
-    DayMenuDataStore.start()
+    DayMenuDataStore.startAndWaitForInitialized()
   }
 }

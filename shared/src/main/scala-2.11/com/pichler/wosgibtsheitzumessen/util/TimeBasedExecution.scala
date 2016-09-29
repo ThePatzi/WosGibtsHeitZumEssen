@@ -14,7 +14,8 @@ object TimeBasedExecution {
       val executionTime = LocalDateTime.now()
         .withHour(time.getHour)
         .withMinute(time.getMinute)
-        .plusDays(1)
+
+         .plusDays(1)
 
       val duration: Duration = Duration.between(LocalDateTime.now(), executionTime)
 
@@ -32,7 +33,6 @@ object TimeBasedExecution {
 
     def scheduleAt(localTime: LocalTime, toExecute: Runnable): ScheduledFuture[_] = {
       val delay = timeToNextExecution(localTime)
-      println(delay)
       scheduledExecutorService.scheduleAtFixedRate(toExecute, delay, TimeUnit.SECONDS.convert(1, TimeUnit.DAYS), TimeUnit.SECONDS)
     }
   }

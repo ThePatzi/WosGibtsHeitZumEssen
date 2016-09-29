@@ -11,7 +11,7 @@ import scalaz.concurrent.Task
   */
 object Main extends ServerApp {
   override def server(args: List[String]): Task[Server] = {
-    DayMenuDataStore.start()
+    DayMenuDataStore.startAndWaitForInitialized()
     Services.builder.start
   }
 }

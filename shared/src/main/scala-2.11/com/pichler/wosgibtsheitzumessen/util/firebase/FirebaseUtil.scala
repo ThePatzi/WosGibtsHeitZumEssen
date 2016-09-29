@@ -13,4 +13,10 @@ object FirebaseUtil {
     override def onCancelled(databaseError: DatabaseError): Unit = {}
   }
 
+  implicit class ExtendedDataSnapshot(dataSnapshot: DataSnapshot) {
+    def getStringValue: String = {
+      dataSnapshot.getValue(classOf[String])
+    }
+  }
+
 }
