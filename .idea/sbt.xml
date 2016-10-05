@@ -9,6 +9,8 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
+            <option value="$PROJECT_DIR$/javaTestAdminTool" />
+            <option value="$PROJECT_DIR$/javaTestAdminTool/project" />
             <option value="$PROJECT_DIR$/project" />
             <option value="$PROJECT_DIR$/refresher" />
             <option value="$PROJECT_DIR$/refresher/project" />

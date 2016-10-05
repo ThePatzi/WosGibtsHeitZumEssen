@@ -1,15 +1,16 @@
 package com.pichler.wosgibtsheitzumessen.refresher.mail
 
 import java.nio.file.Paths
+import java.time.temporal.ChronoField
 import java.time.{LocalDate, ZoneId}
-import java.util.Properties
+import java.util.{Date, Properties}
 import java.util.concurrent.Executors
 import javax.mail._
 import javax.mail.event._
 
 import com.pichler.wosgibtsheitzumessen.data.DayMenuDataStore
 import com.pichler.wosgibtsheitzumessen.model.SpecialMenu
-import com.pichler.wosgibtsheitzumessen.util.Util.DateToStr
+import com.pichler.wosgibtsheitzumessen.util.Util._
 import com.sun.mail.imap.IdleManager
 
 import scala.io.Source
@@ -49,6 +50,7 @@ object SpecialMenuParser {
   def handleMessages(messages: Array[Message]): Unit = {
     messages.toStream
       .filter(_.getSubject.toLowerCase.contains("tagesempfehlung"))
+      .filterNot(m => DayMenuDataStore.hasSpecialMenu(m.getSentDate))
       .map(m => (m, parseDailyMenu(m)))
       .filter(_._2 != null)
       .foreach(pair => {

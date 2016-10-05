@@ -2,6 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/javaTestAdminTool.iml" filepath="$PROJECT_DIR$/.idea/modules/javaTestAdminTool.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/javaTestAdminTool-build.iml" filepath="$PROJECT_DIR$/.idea/modules/javaTestAdminTool-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/refresher.iml" filepath="$PROJECT_DIR$/.idea/modules/refresher.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/refresher-build.iml" filepath="$PROJECT_DIR$/.idea/modules/refresher-build.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/root.iml" filepath="$PROJECT_DIR$/.idea/modules/root.iml" />

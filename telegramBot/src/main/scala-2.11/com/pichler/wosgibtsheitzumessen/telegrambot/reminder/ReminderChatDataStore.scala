@@ -24,7 +24,9 @@ object ReminderChatDataStore {
   val scheduledExecutorService = Executors.newSingleThreadScheduledExecutor()
   private var started: Boolean = false
 
-  telegramBotReminders.addValueEventListener((snapshot: DataSnapshot) => {
+  private var alreadyReminded = false
+
+  telegramBotReminders.addListenerForSingleValueEvent((snapshot: DataSnapshot) => {
     snapshot.getChildren.iterator().toStream.foreach(snapshot => chatIds += snapshot.getValue(classOf[String]))
   })
 
@@ -45,7 +47,29 @@ object ReminderChatDataStore {
 
     started = true
 
-    scheduledExecutorService.scheduleAt(LocalTime.of(9, 0), () => remind())
+    DayMenuDataStore += {
+      dayMenu: DayMenu => {
+        if (LocalDate.now().equals(dayMenu.date)) {
+          remind()
+          alreadyReminded = true
+        }
+      }
+    }
+
+    scheduledExecutorService.scheduleAt(LocalTime.of(9, 0), () => remindWithCheck())
+  }
+
+  def cancelNextRemind(): Unit = {
+    alreadyReminded = true
+  }
+
+  def remindWithCheck(): Unit = {
+    if (alreadyReminded) {
+      alreadyReminded = false
+      return
+    }
+
+    remind()
   }
 
   def remind(): Unit = {
@@ -73,10 +97,9 @@ object ReminderChatDataStore {
     if (contains(id)) {
       chatIds -= id
       telegramBotReminders.child(id).removeValue()
-
-      return true
+      true
+    } else {
+      false
     }
-
-    false
   }
 }

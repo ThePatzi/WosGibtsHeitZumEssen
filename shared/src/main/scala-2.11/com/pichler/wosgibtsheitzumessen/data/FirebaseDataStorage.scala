@@ -20,4 +20,10 @@ object FirebaseDataStorage {
   }
 
   val firebaseDatabase: FirebaseDatabase = FirebaseDatabase.getInstance()
+
+  firebaseDatabase.getReference("test").addValueEventListener(new ValueEventListener {
+    override def onDataChange(dataSnapshot: DataSnapshot): Unit = {}
+    override def onCancelled(databaseError: DatabaseError): Unit = {}
+  })
+
 }

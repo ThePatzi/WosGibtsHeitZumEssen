@@ -6,7 +6,7 @@ version := "1.0"
 
 val scalaV = "2.11.8"
 
-val http4sVersion = "0.15.0a-SNAPSHOT"
+val http4sVersion = "0.14.8"
 
 resolvers += Resolver.sonatypeRepo("snapshots")
 //resolvers += "Sonatype OSS Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots"
@@ -124,6 +124,22 @@ lazy val telegramBot = project.in(file("telegramBot"))
       ImageName("patzi/wosgibtsheitzumessen_telegrambot:latest")
     )
   )
+
+lazy val javaTestAdminTool = project.in(file("javaTestAdminTool"))
+  .settings(
+    scalaVersion := scalaV,
+    name := "javaTestAdminTool",
+    libraryDependencies ++= Seq(
+    ),
+    mainClass in assembly := Some("com.pichler.wosgibtsheitzumessen.javaadmintool.Main"),
+    assemblyJarName in assembly := "WosGibtsHeitZumEssen_javaadmintool.jar",
+    assemblyMergeStrategy in assembly := {
+      case PathList(xs@_*) if xs.contains("opuswrapper") || xs.contains("tritonus") => MergeStrategy.last // needed to have both JDA and D4J at the same time
+      case x =>
+        val oldStrategy = (assemblyMergeStrategy in assembly).value
+        oldStrategy(x)
+    }
+  ).dependsOn(shared)
 
 lazy val root = project.in(file("."))
   .aggregate(shared, refresher, server, telegramBot)

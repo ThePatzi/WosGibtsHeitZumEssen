@@ -10,6 +10,7 @@ import scala.collection.mutable
 import scala.collection.JavaConversions._
 import com.pichler.wosgibtsheitzumessen.util.firebase.FirebaseUtil.toValueEventListenerUpdate
 import com.pichler.wosgibtsheitzumessen.util.Util.DateToStr
+import com.pichler.wosgibtsheitzumessen.util.firebase.ChildEventAdapter
 
 /**
   * Created by Patrick on 17.09.2016.
@@ -20,50 +21,56 @@ object DayMenuDataStore {
   private val menuMap = new mutable.HashMap[LocalDate, DayMenu]()
     .withDefaultValue(null)
 
-  private val completeableFuture = new CompletableFuture[Boolean]()
+  private val specialMenuListeners: mutable.MutableList[DayMenu => Unit] = mutable.MutableList()
 
-  menuReference.addListenerForSingleValueEvent((snapshot: DataSnapshot) => {
+  private val completableFuture = new CompletableFuture[Boolean]()
+
+  menuReference.addListenerForSingleValueEvent(toValueEventListenerUpdate((snapshot: DataSnapshot) => {
     snapshot.getChildren.iterator.toStream.map(DayMenu.parse).foreach(e => menuMap(e.date) = e)
 
-    completeableFuture.complete(true)
+    completableFuture.complete(true)
+  }))
 
-    menuReference.addListenerForSingleValueEvent((snapshot: DataSnapshot) => {
-      snapshot.getChildren.iterator.toStream.map(DayMenu.parse).foreach(e => menuMap(e.date) = e)
+  private def updateMenuMap(dayMenu: DayMenu): Unit = {
+    val old = menuMap(dayMenu.date)
+    menuMap(dayMenu.date) = dayMenu
+
+    if (old != null && old.specialMenu != dayMenu.specialMenu) {
+      specialMenuListeners.foreach(_ (dayMenu))
+    }
+  }
+
+  private def handleUpdate(dataSnapshot: DataSnapshot): Unit = {
+    if (dataSnapshot.getValue == null) {
+      return
+    }
+
+    val dayMenu = DayMenu.parse(dataSnapshot)
+    updateMenuMap(dayMenu)
+  }
+
+  menuReference.addChildEventListener(new ChildEventAdapter(
+    childAdded = (dataSnapshot, p) => {
+      handleUpdate(dataSnapshot)
+    },
+    childChanged = (dataSnapshot, p) => {
+      handleUpdate(dataSnapshot)
     })
+  )
 
-  })
-
-
-  menuReference.addChildEventListener(new ChildEventListener {
-    def handleUpdate(dataSnapshot: DataSnapshot): Unit = {
-      if (dataSnapshot.getValue == null) {
-        return
-      }
-
-      val dayMenu = DayMenu.parse(dataSnapshot)
-      menuMap(dayMenu.date) = dayMenu
-    }
-
-    override def onChildRemoved(dataSnapshot: DataSnapshot): Unit = {}
-
-    override def onChildMoved(dataSnapshot: DataSnapshot, s: String): Unit = {}
-
-    override def onChildChanged(dataSnapshot: DataSnapshot, s: String): Unit = {
-      handleUpdate(dataSnapshot)
-    }
-
-    override def onCancelled(databaseError: DatabaseError): Unit = {}
-
-    override def onChildAdded(dataSnapshot: DataSnapshot, s: String): Unit = {
-      handleUpdate(dataSnapshot)
-    }
-  })
 
   def apply(date: LocalDate): DayMenu = menuMap(date)
 
   def update(date: LocalDate, dayMenu: DayMenu): Unit = {
     menuMap(date) = dayMenu
     menuReference.child(date.toString("ddMMyyyy")).setValue(dayMenu)
+  }
+
+  def hasSpecialMenu(date: LocalDate): Boolean = {
+    val specialMenu = menuMap(date).specialMenu
+
+    specialMenu != null && ((specialMenu.menu != null && !specialMenu.menu.trim.isEmpty) ||
+      (specialMenu.soup != null && specialMenu.soup.trim.isEmpty))
   }
 
   def merge(date: LocalDate, dayMenu: DayMenu): DayMenu = {
@@ -91,6 +98,8 @@ object DayMenuDataStore {
 
   def +=(dayMenu: DayMenu): Unit = update(dayMenu.date, dayMenu)
 
+  def +=(l: DayMenu => Unit): Unit = specialMenuListeners += l
+
   def <>(dayMenu: DayMenu): Unit = {
     merge(dayMenu.date, dayMenu)
   }
@@ -107,6 +116,6 @@ object DayMenuDataStore {
   def start(): Unit = {}
 
   def startAndWaitForInitialized(): Unit = {
-    completeableFuture.get()
+    completableFuture.get()
   }
 }

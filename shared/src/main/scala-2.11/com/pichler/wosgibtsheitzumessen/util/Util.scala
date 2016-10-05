@@ -1,8 +1,8 @@
 package com.pichler.wosgibtsheitzumessen.util
 
-import java.time.LocalDate
+import java.time.{LocalDate, ZoneId}
 import java.time.format.DateTimeFormatter
-import java.util.Locale
+import java.util.{Date, Locale}
 
 import scala.collection.mutable
 import scala.util.Try
@@ -56,4 +56,7 @@ object Util {
     }
   }
 
+  implicit def dateToLocalDate(date: Date): LocalDate = {
+    date.toInstant.atZone(ZoneId.systemDefault()).toLocalDate
+  }
 }
